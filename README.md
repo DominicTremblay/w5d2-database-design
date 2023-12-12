@@ -1,19 +1,8 @@
-# Database Design
+# Notes
 
-## Agenda
+## Lecture Plan
 
-- What is database design
-- Entity-Relationship Diagrams
-  - Entities and attributes
-  - Relationships
-  - Conventions
-  - Primary and Foreign keys
-- Hands-On Exercise
-  - Creating the Movies DB ERD
-  - [Movies DB Exercise](https://gist.github.com/DominicTremblay/826a607bf3f18d9a21858a1dd9115a07)
-- Database Tables Recap
-- Movies DB ERD solution
-- Database Normalization
+### 1. Introduction to Database Design (10 minutes)
 
 #### 1.1 What is Database Design
 
@@ -23,7 +12,7 @@
 
 * Good database design ensures data integrity and consistency while minimizing redundancy and potential for errors.
 
-### 2. Entity-Relationship Diagrams (ERDs), Entities, and Attributes
+### 2. Entity-Relationship Diagrams (ERDs), Entities, and Attributes *(20 minutes)*
 
 *  An Entity-Relationship Diagram (ERD) is a visual representation of the entities within a database system and the relationships between these entities.
 
@@ -50,13 +39,14 @@
 - What is the cardinality?
 
 - [ERD Exercise](https://gist.github.com/DominicTremblay/826a607bf3f18d9a21858a1dd9115a07)
+- [Draw.io - Demo](https://drive.google.com/file/d/1JI-kfdSoRI920OVj1cXyYLJI_YyZ15ej/view?usp=sharing)
 - [Customer's Orders ERD](./images/customers_erd.png)
 
 #### 2.3 Primary Key
 
 * A way of uniquely identifying a particular record in a database table 
 * Must be unique (within the table) and can never be null
-* The usual data type is auto-incrementing integer (`INTEGER` or `BIGINT`)
+* The usual data type is auto-incrementing integer (`INTEGER` or `BIGINT` or `UUID`)
 * A Primary Key stored in another table is known as a `Foreign Key`
 * The Primary Key and Foreign Key **MUST** be the same data type
 
@@ -69,18 +59,49 @@
 
 ### 2.5 Cardinality of Relationship
 
-* **One-to-One**: One record in the first table is related to one (and only one) record in the second table
-* **One-to-Many**: One record in the first table is related to one or more records in the second table
-* **Many-to-Many**: One or more records in the first table are related to one or more records in the second table
+* **One-to-One**: One entity in a set is associated with exactly one entity in another set.
+* **One-to-Many**: One entity in a set can be associated with multiple entities in another set.
+* **Many-to-Many**: Entities in one set can be associated with multiple entities in another set and vice versa.
 
 * It could be argued that there is really only one relationship type: _One-to-Many_ as One-to-One's are extremely rare and Many-to-Many's are implemented using two _One-to-Many's_
 
-### 3. **Tables in PostgreSQL**
+
+### Customers Table (Springfield Residents)
+
+| id         | name             | phone      |
+|------------|------------------|------------|
+| 1          | Homer Simpson    | 555-0001   |
+| 2          | Marge Simpson    | 555-0002   |
+| 3          | Bart Simpson     | 555-0003   |
+| 4          | Lisa Simpson     | 555-0004   |
+| 5          | Ned Flanders     | 555-0005   |
+
+### Orders Table (Kwik-E-Mart Orders)
+
+| id      | name                  | quantity | customer_id |
+|---------|-----------------------|----------|-------------|
+| 101     | Duff Beer             | 24       | 1           |
+| 102     | Krusty-O's Cereal     | 3        | 2           |
+| 103     | Squishee              | 2        | 3           |
+| 104     | Buzz Cola             | 12       | 4           |
+| 105     | Flanders' Hot Cocoa   | 6        | 5           |
+
+
+
+### 3. Breakout Exercise
+
+[Movies Database](https://gist.github.com/DominicTremblay/826a607bf3f18d9a21858a1dd9115a07)
+
+### 3. **Tables in PostgreSQL** *(20 minutes)*
 
    - Understanding the concept of tables in relational databases
    - Entities are tables. Tables are like spreadsheet
    - The table fields are columns
    - A record is a row
+
+#### Example
+
+- [Movies Table](https://docs.google.com/spreadsheets/d/1pqzlAwYVEUw0XXV47tD5frK9Qtg1UEvnal0LltvPCdo/edit#gid=1604370562)
 
 #### 3.1 Data Types
 
@@ -95,6 +116,8 @@
 * Numeric Types [SMALLINT, INT, SERIAL, FLOAT(n)]
 * Temporal Types [ DATE, TIME, TIMESTAMP ]
 
+- [Data Types Doc](https://www.postgresql.org/docs/current/datatype.html)
+
 ##### 3.1.2 Other types:
 
 * UUID [ for storing UUID (Universally Unique Identifiers) ]
@@ -107,19 +130,15 @@
 
 ### 4. Create the Movies DB ERD
 
-- create the movies schema in [https://dbdiagram.io/](https://dbdiagram.io/)
+- create the movies schema in [https://dbdiagram.io/](https://dbdiagram.io/d/movies_schema-656809763be1495787055ac6)
 
 OR
 
-- [Draw.io - Movies DB ERD](https://draw.io)
+- [Draw.io - Movies DB ERD](https://drive.google.com/file/d/17NMc6hvyDxzxMMuaPyq0LJwRRlrCpWZk/view?usp=sharing)
 
-#### Movies DB ERD
+- [Full Movies DB ERD](https://drive.google.com/file/d/1LkrjZkrluAs73z78OBdEZfpETwmsl7_J/view?usp=sharing)
 
-- [Draw.io - version](./images/movies_db_erd.png)
-- [dbdiagram - version](./images/movies_db_erd_dbdiagram.png)
-
-
-### 5. **Database Normalization** 
+### 5. **Database Normalization** *(20 minutes)*
 
 - Normalization is a systematic approach of decomposing tables to eliminate data redundancy(repetition) and to ensure data integrity. 
 
@@ -131,9 +150,6 @@ OR
 
 #### 5.2 Normalization Exercise
 
-When all the data is found in a single table, we have a few issues.
-
-- [movies_directors.png](./images/movies_directors.png)
 
 Issues:
 
@@ -145,3 +161,6 @@ Issues:
 
 Solution: break down into several tables
 
+- [Googlesheet Data](https://docs.google.com/spreadsheets/d/1pqzlAwYVEUw0XXV47tD5frK9Qtg1UEvnal0LltvPCdo/edit#gid=1604370562)
+
+- [Database Normalization](https://www.studytonight.com/dbms/database-normalization.php)
